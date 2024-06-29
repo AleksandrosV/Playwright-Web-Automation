@@ -1,18 +1,27 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, BrowserContext } from '@playwright/test'
 import { PageManager } from '../pages/pageManager'
+import { TestData } from '../config/testData'
 
-test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:4200')
+let context: BrowserContext
+let pm: PageManager
+
+test.beforeEach(async ({ browser }) => {
+    context = await browser.newContext()
+    const page = await context.newPage()
+    pm = new PageManager(page);
+    await page.goto(TestData.baseUrl)
+})
+
+test.afterEach(async () => {
+    await context.close()
 })
 
 test('Select a date on Common Datepicker', async ({ page }) => {
-    const pm = new PageManager(page)
     await pm.navigateTo().datepickerPage()
     await pm.onDatePIckerPage().selectCommonDatePickerDateFromToday(10)
 })
 
 test('Select a date on Range Datepicker', async ({ page }) => {
-    const pm = new PageManager(page)
     await pm.navigateTo().datepickerPage()
     await pm.onDatePIckerPage().selectDatePickerWithRangeFromToday(6, 15)
 })
