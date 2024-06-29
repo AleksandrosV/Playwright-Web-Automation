@@ -1,6 +1,5 @@
 import { expect, test } from '@playwright/test'
 import { DashboardPage } from '../pages/dashboardPage'
-import { url } from 'inspector'
 
 test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:4200')
