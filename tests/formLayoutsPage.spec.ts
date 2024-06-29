@@ -8,11 +8,13 @@ test.beforeEach(async ({ page }) => {
 test('Fill and submit Using the Grid', async ({ page }) => {
     const pm = new PageManager(page)
     await pm.navigateTo().formLayoutsPage()
-    await pm.onFormLayoutsPage().submitUsingTheGridFormWithCredsAndSelectOption('test@test.com', 'Welcome1', 'Option 1')
+    await pm.onFormLayoutsPage().submitUsingTheGridForm('test@test.com', 'Welcome1', 'Option 2')
+    await expect(pm.onFormLayoutsPage().gridEmailField).toHaveValue('test@test.com');
 })
 
 test('Fill and submit Inline form', async ({ page }) => {
     const pm = new PageManager(page)
     await pm.navigateTo().formLayoutsPage()
-    await pm.onFormLayoutsPage().submitInLineFormWithNameEmailAndCheckbox('Alex Vuros', 'alex@test.com', true)
+    await pm.onFormLayoutsPage().submitInlineForm('Alex Vuros', 'alex@test.com', true)
+    await expect(pm.onFormLayoutsPage().inlineEmailField).toHaveValue('alex@test.com');
 })

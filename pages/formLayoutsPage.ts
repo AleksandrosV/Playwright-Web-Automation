@@ -1,25 +1,50 @@
-import { Page } from "@playwright/test"
-import { HelperBase } from "./helperBase"
+import { Locator, Page } from "@playwright/test";
+import { HelperBase } from "./helperBase";
 
 export class FormLayoutsPage extends HelperBase {
     constructor(page: Page) {
-        super(page)
+        super(page);
     }
 
-    async submitUsingTheGridFormWithCredsAndSelectOption(email: string, password: string, optionText: string) {
-        const usingTheGridForm = this.page.locator('nb-card', { hasText: "Using the Grid" })
-        await usingTheGridForm.getByRole('textbox', { name: "Email" }).fill(email)
-        await usingTheGridForm.getByRole('textbox', { name: "Password" }).fill(password)
-        await usingTheGridForm.getByRole('radio', { name: optionText }).check({ force: true })
-        await usingTheGridForm.getByRole('button').click()
+    // Locators
+    private usingTheGridForm = this.page.locator('nb-card', { hasText: "Using the Grid" });
+    private inlineForm = this.page.locator('nb-card', { hasText: "Inline form" });
+
+    get gridEmailField() {
+        return this.usingTheGridForm.getByRole('textbox', { name: "Email" });
     }
 
-    async submitInLineFormWithNameEmailAndCheckbox(name: string, email: string, rememberMe: boolean) {
-        const inlineForm = this.page.locator('nb-card', { hasText: "Inline form" })
-        await inlineForm.getByRole('textbox', { name: "Jane Doe" }).fill(name)
-        await inlineForm.getByRole('textbox', { name: "Email" }).fill(email)
-        if (rememberMe)
-            await inlineForm.getByRole('checkbox').check({ force: true })
-        await inlineForm.getByRole('button').click()
+    get inlineEmailField() {
+        return this.inlineForm.getByRole('textbox', { name: "Email" });
+    }
+
+    // Methods
+    async submitUsingTheGridForm(email: string, password: string, optionText: string) {
+        await this.fillTextBox(this.usingTheGridForm, "Email", email);
+        await this.fillTextBox(this.usingTheGridForm, "Password", password);
+        await this.selectRadioOption(this.usingTheGridForm, optionText);
+        await this.clickButton(this.usingTheGridForm);
+    }
+
+    async submitInlineForm(name: string, email: string, rememberMe: boolean) {
+        await this.fillTextBox(this.inlineForm, "Jane Doe", name);
+        await this.fillTextBox(this.inlineForm, "Email", email);
+        if (rememberMe) {
+            await this.inlineForm.getByRole('checkbox').check({ force: true });
+        }
+        await this.clickButton(this.inlineForm);
+    }
+
+    // Helper methods
+    private async fillTextBox(form: Locator, fieldName: string, text: string) {
+        await form.getByRole('textbox', { name: fieldName }).fill(text);
+    }
+
+    private async selectRadioOption(form: Locator, optionText: string) {
+        await form.getByRole('radio', { name: optionText }).check({ force: true });
+    }
+
+    private async clickButton(form: Locator) {
+        await form.getByRole('button').click();
     }
 }
