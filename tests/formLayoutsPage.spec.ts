@@ -11,11 +11,15 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('Fill and submit Using the Grid', async () => {
-    await pm.onFormLayoutsPage().submitUsingTheGridForm('test@test.com', 'Welcome1', 'Option 2');
-    await expect(pm.onFormLayoutsPage().gridEmailField).toHaveValue('test@test.com');
+    const email = TestData.generateEmail();
+    const password = TestData.generatePassword();
+    await pm.onFormLayoutsPage().submitUsingTheGridForm(email, password, 'Option 2');
+    await expect(pm.onFormLayoutsPage().gridEmailField).toHaveValue(email);
 });
 
 test('Fill and submit Inline form', async () => {
-    await pm.onFormLayoutsPage().submitInlineForm('Alex Vuros', 'alex@test.com', true);
-    await expect(pm.onFormLayoutsPage().inlineEmailField).toHaveValue('alex@test.com');
+    const name = TestData.generateName();
+    const email = TestData.generateEmail();
+    await pm.onFormLayoutsPage().submitInlineForm(name, email, true);
+    await expect(pm.onFormLayoutsPage().inlineEmailField).toHaveValue(email);
 });
