@@ -53,7 +53,7 @@ Before setting up the project, ensure the following software is installed on you
 1. Clone this Playwright-Web-Automation repository.
 
    ```bash
-   git clone <your-repository-url>
+   git clone https://github.com/AleksandrosV/Playwright-Web-Automation.git
    ```
 
 2. Open the cloned project in Visual Studio Code:
