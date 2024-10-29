@@ -10,7 +10,7 @@ export class DatePickerPage extends HelperBase {
         const calendarInputField = this.page.getByPlaceholder('Form Picker');
         await calendarInputField.click();
         const dateToAssert = await this.selectDateInCalendar(numberOfDaysFromToday);
-        return dateToAssert; // Return the date for assertion in the test
+        return dateToAssert;
     }
 
     async selectDatePickerWithRangeFromToday(startDateFromToday: number, endDayFromToday: number): Promise<{ startDate: string, endDate: string }> {
@@ -18,7 +18,7 @@ export class DatePickerPage extends HelperBase {
         await calendarInputField.click();
         const dateToAssertStart = await this.selectDateInCalendar(startDateFromToday);
         const dateToAssertEnd = await this.selectDateInCalendar(endDayFromToday);
-        return { startDate: dateToAssertStart, endDate: dateToAssertEnd }; // Return both dates for assertion in the test
+        return { startDate: dateToAssertStart, endDate: dateToAssertEnd };
     }
 
     private async selectDateInCalendar(numberOfDaysFromToday: number): Promise<string> {
