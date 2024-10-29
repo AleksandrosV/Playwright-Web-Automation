@@ -117,8 +117,3 @@ The main configuration file is `playwright.config.ts`, where you can customize t
 - **`pages`**: Holds page objects that encapsulate the web pages' UI elements and interactions.
 - **`config`**: Includes configuration files and test data for customizing the test runs.
 - **`helpers`**: Helper functions and reusable utilities used throughout the test suite.
-
-### Additional Notes
-
-- **Environment Variables**: For sensitive data or different configurations, consider using a `.env` file and the `dotenv` package to securely load environment variables.
-- **Error Handling**: Playwright automatically takes screenshots on failures, which can be configured for each test run.
