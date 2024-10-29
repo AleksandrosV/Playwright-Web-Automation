@@ -1,4 +1,4 @@
-import { expect, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 import { HelperBase } from "./helperBase";
 
 export class DatePickerPage extends HelperBase {
@@ -6,23 +6,22 @@ export class DatePickerPage extends HelperBase {
         super(page);
     }
 
-    async selectCommonDatePickerDateFromToday(numberOfDaysFromToday: number) {
+    async selectCommonDatePickerDateFromToday(numberOfDaysFromToday: number): Promise<string> {
         const calendarInputField = this.page.getByPlaceholder('Form Picker');
         await calendarInputField.click();
         const dateToAssert = await this.selectDateInCalendar(numberOfDaysFromToday);
-        await expect(calendarInputField).toHaveValue(dateToAssert);
+        return dateToAssert; // Return the date for assertion in the test
     }
 
-    async selectDatePickerWithRangeFromToday(startDateFromToday: number, endDayFromToday: number) {
+    async selectDatePickerWithRangeFromToday(startDateFromToday: number, endDayFromToday: number): Promise<{ startDate: string, endDate: string }> {
         const calendarInputField = this.page.getByPlaceholder('Range Picker');
         await calendarInputField.click();
         const dateToAssertStart = await this.selectDateInCalendar(startDateFromToday);
         const dateToAssertEnd = await this.selectDateInCalendar(endDayFromToday);
-        const dateToAssert = `${dateToAssertStart} - ${dateToAssertEnd}`;
-        await expect(calendarInputField).toHaveValue(dateToAssert);
+        return { startDate: dateToAssertStart, endDate: dateToAssertEnd }; // Return both dates for assertion in the test
     }
 
-    private async selectDateInCalendar(numberOfDaysFromToday: number) {
+    private async selectDateInCalendar(numberOfDaysFromToday: number): Promise<string> {
         let date = new Date();
         date.setDate(date.getDate() + numberOfDaysFromToday);
 

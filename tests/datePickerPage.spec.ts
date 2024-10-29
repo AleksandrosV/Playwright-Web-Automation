@@ -11,9 +11,18 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('Select a date on Common Datepicker', async ({ page }) => {
-    await pm.onDatePIckerPage().selectCommonDatePickerDateFromToday(10);
+    const dateToAssert = await pm.onDatePIckerPage().selectCommonDatePickerDateFromToday(10);
+
+    // Assert that the selected date is displayed in the input field
+    const calendarInputField = pm.onDatePIckerPage().page.getByPlaceholder('Form Picker');
+    await expect(calendarInputField).toHaveValue(dateToAssert);
 });
 
 test('Select a date on Range Datepicker', async ({ page }) => {
-    await pm.onDatePIckerPage().selectDatePickerWithRangeFromToday(6, 15);
+    const { startDate, endDate } = await pm.onDatePIckerPage().selectDatePickerWithRangeFromToday(6, 15);
+
+    // Assert that the selected range is displayed in the input field
+    const calendarInputField = pm.onDatePIckerPage().page.getByPlaceholder('Range Picker');
+    const dateRangeToAssert = `${startDate} - ${endDate}`;
+    await expect(calendarInputField).toHaveValue(dateRangeToAssert);
 });
