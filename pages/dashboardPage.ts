@@ -1,6 +1,5 @@
 import { Page } from "@playwright/test";
 import { HelperBase } from "./helperBase";
-import { expect, test } from '@playwright/test';
 
 export class DashboardPage extends HelperBase {
     constructor(page: Page) {
