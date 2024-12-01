@@ -1,9 +1,45 @@
 import { Page } from "@playwright/test";
 import { HelperBase } from "./helperBase";
+import { expect, test } from '@playwright/test';
 
 export class DashboardPage extends HelperBase {
     constructor(page: Page) {
         super(page);
+    }
+
+    private lightButton = this.page.getByRole('button', { name: 'Light' });
+    private darkButton = this.page.getByRole('button', { name: 'Dark' });
+    private cosmicButton = this.page.getByRole('button', { name: 'Cosmic' });
+    private corporateButton = this.page.getByRole('button', { name: 'Corporate' });
+
+    async getThemeOptions(): Promise<string[]> {
+        await this.lightButton.click();
+        const options = this.page.locator('ul.option-list nb-option');
+        return options.allInnerTexts();
+    }
+
+    async selectTheme(currentTheme: string, nextTheme: string): Promise<void> {
+        let buttonToClick;
+        // Select the correct button based on the current theme
+        switch (currentTheme) {
+            case 'Light':
+                buttonToClick = this.lightButton;
+                break;
+            case 'Dark':
+                buttonToClick = this.darkButton;
+                break;
+            case 'Cosmic':
+                buttonToClick = this.cosmicButton;
+                break;
+            case 'Corporate':
+                buttonToClick = this.corporateButton;
+                break;
+            default:
+                throw new Error(`Unknown theme: ${currentTheme}`);
+        }
+        await buttonToClick.click();
+        // Select the next theme option
+        await this.page.locator(`nb-option:has-text("${nextTheme}")`).click();
     }
 
     async formLayoutsPage() {
